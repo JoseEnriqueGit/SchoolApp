@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { HttpClient } from '@angular/common/http';
 
 export interface StudentData {
   position: number;
@@ -8,7 +9,7 @@ export interface StudentData {
   LenguaEspanola: number;
   Matematicas: number;
   CienciasNaturales: number;
-  CienciasSociales: number;
+  Ciencias_Sociales: number;
   Promedio: string;
 }
 
@@ -18,90 +19,28 @@ export interface StudentData {
   styleUrls: ['./StudentViewComponent.scss'],
 })
 export class StudentViewComponent {
-  dataSource = new MatTableDataSource<StudentData>([
-    {
-      position: 1,
-      nombre: 'Hydrogen',
-      apellido: 'H',
-      LenguaEspanola: 1.0079,
-      Matematicas: 1.0079,
-      CienciasNaturales: 1.0079,
-      CienciasSociales: 1.0079,
-      Promedio: 'A',
-    },
-    {
-      position: 2,
-      nombre: 'Helium',
-      apellido: 'He',
-      LenguaEspanola: 4.0026,
-      Matematicas: 4.0026,
-      CienciasNaturales: 4.0026,
-      CienciasSociales: 4.0026,
-      Promedio: 'B',
-    },
-    {
-      position: 3,
-      nombre: 'Lithium',
-      apellido: 'Li',
-      LenguaEspanola: 6.941,
-      Matematicas: 6.941,
-      CienciasNaturales: 6.941,
-      CienciasSociales: 6.941,
-      Promedio: 'C',
-    },
-    {
-      position: 4,
-      nombre: 'Beryllium',
-      apellido: 'Be',
-      LenguaEspanola: 9.0122,
-      Matematicas: 9.0122,
-      CienciasSociales: 10.811,
-      CienciasNaturales: 9.0122,
-      Promedio: 'D',
-    },
-    {
-      position: 5,
-      nombre: 'Boron',
-      apellido: 'B',
-      LenguaEspanola: 10.811,
-      Matematicas: 10.811,
-      CienciasNaturales: 10.811,
-      CienciasSociales: 10.811,
-      Promedio: 'B',
-    },
-    {
-      position: 6,
-      nombre: 'Carbon',
-      apellido: 'C',
-      LenguaEspanola: 12.0107,
-      Matematicas: 12.0107,
-      CienciasNaturales: 12.0107,
-      CienciasSociales: 12.0107,
-      Promedio: 'C',
-    },
-    {
-      position: 7,
-      nombre: 'Nitrogen',
-      apellido: 'N',
-      LenguaEspanola: 14.0067,
-      Matematicas: 14.0067,
-      CienciasNaturales: 14.0067,
-      CienciasSociales: 14.0067,
-      Promedio: 'D',
-    },
-    {
-      position: 8,
-      nombre: 'Oxygen',
-      apellido: 'O',
-      LenguaEspanola: 15.9994,
-      Matematicas: 15.9994,
-      CienciasNaturales: 15.9994,
-      CienciasSociales: 15.9994,
-      Promedio: 'A',
-    },
-  ]);
 
+  constructor(private http: HttpClient) {}
+  
   value: string = '';
+
+  dataSource = new MatTableDataSource<StudentData>([]);
+
+  ngOnInit() {
+    this.getStudents();
+  }
+
+  getStudents() {
+    this.http.get<StudentData[]>('https://apischoolapi.azure-api.net/estudiante')
+    .subscribe((data: StudentData[]) => {
+    // Asigna los datos recibidos a la propiedad dataSource de tu tabla
+    this.dataSource = new MatTableDataSource(data);
+    console.log(this.dataSource);
+    
+    });   
+  }
+
+
   displayedColumns: string[] = [
     'position',
     'nombre',
