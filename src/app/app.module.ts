@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { AttendanceViewComponent } from './Pages/attendance-view/attendance-view.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatButtonModule,
     HttpClientModule,
     MatCheckboxModule,
+    MatDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
