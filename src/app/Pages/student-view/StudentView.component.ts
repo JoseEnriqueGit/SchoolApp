@@ -35,6 +35,8 @@ export class StudentViewComponent {
   value: string = '';
   onEdit: boolean = false;
   idToEdit: string = '';
+  nameToEdit: string = '';
+  lastNameToEdit: string = '';
 
   dataSource = new MatTableDataSource<StudentData>([]);
 
@@ -75,6 +77,10 @@ export class StudentViewComponent {
   ngOnInit() {
     this.getStudents();
   }
+
+  back() {
+    this.onEdit = !this.onEdit;
+  }
   
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -103,7 +109,18 @@ export class StudentViewComponent {
   }
 
   editStudent(_id: number) {
-    this.onEdit = !this.onEdit;
+    if (!this.onEdit) {
+      this.onEdit = !this.onEdit;
+    }
+
+    this.http.get<StudentData>(`https://schoolapi-vkp2.onrender.com/estudiante/${_id}`)
+    .subscribe((data: StudentData) => {
+      console.log(data);
+      
+      this.nameToEdit = data.nombre;
+      this.lastNameToEdit = data.apellido;
+    }
+    );
     this.idToEdit = _id.toString();
   }
 

@@ -1,5 +1,5 @@
 <div class="StudentViewComponent">
-  <div>
+  <div class="ListStudent">
     <mat-form-field>
       <mat-label>Filtro</mat-label>
       <input
@@ -117,12 +117,7 @@
 
   <!-- Add student -->
 
-  <div *ngIf="!onEdit">
-    <div class="demo-button-container">
-      <button mat-raised-button (click)="addData()" class="demo-button">
-        Crear Usuario
-      </button>
-    </div>
+  <div class="AddStudent" *ngIf="!onEdit">
   
     <table mat-table [dataSource]="dataSourceAdd" class="mat-elevation-z8">
   
@@ -189,17 +184,24 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumnsAdd"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumnsAdd"></tr>
     </table>
+    <div class="demo-button-container">
+      <button mat-flat-button (click)="addData()" class="demo-button">
+        Crear Usuario
+      </button>
+    </div>
   </div>
 
   <!-- Edit -->
 
-  <div *ngIf="onEdit">
+  <div class="ModicStudent" *ngIf="onEdit">
     <div class="demo-button-container">
-      <button mat-raised-button (click)="editData()" class="demo-button">
-        Modoficar estudiante
+      <button mat-flat-button color="accent" (click)="back()" class="demo-button">
+        Volver
       </button>
+      <h2>
+        Editando a {{nameToEdit}} {{lastNameToEdit}}
+      </h2>
     </div>
-  
     <table mat-table [dataSource]="dataSourceAdd" class="mat-elevation-z8">
   
       <!-- Nombre Column -->
@@ -265,9 +267,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumnsAdd"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumnsAdd"></tr>
     </table>
+
+    <div class="button-container-modic">
+      <button mat-flat-button (click)="editData()" class="demo-button">
+        Modoficar estudiante
+      </button>
+    </div>
   </div>
-  
-  <!-- <AddStudentComponent *ngIf="!onEdit"></AddStudentComponent> -->
-  <!-- <EditStudentComponent *ngIf="onEdit"></EditStudentComponent> -->
 
 </div>
