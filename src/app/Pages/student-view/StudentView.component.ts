@@ -26,18 +26,6 @@ export class StudentViewComponent {
 
   dataSource = new MatTableDataSource<StudentData>([]);
 
-  ngOnInit() {
-    this.getStudents();
-  }
-
-  getStudents() {
-    this.http.get<StudentData[]>('https://apischoolapimana.azure-api.net/estudiante')
-    .subscribe((data: StudentData[]) => {
-      this.dataSource = new MatTableDataSource(data);
-    });   
-  }
-
-
   displayedColumns: string[] = [
     'position',
     'nombre',
@@ -51,8 +39,30 @@ export class StudentViewComponent {
     'delete',
   ];
 
+  ngOnInit() {
+    this.getStudents();
+  }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  getStudents() {
+    this.http.get<StudentData[]>('https://schoolapi-vkp2.onrender.com/all-estudiante')
+    .subscribe((data: StudentData[]) => {
+      this.dataSource = new MatTableDataSource(data);
+      console.log(this.dataSource.data);
+      
+    });   
+  }
+  deleteStudent(id: number) {
+    this.http.delete(`https://schoolapi-vkp2.onrender.com/delete-estudiante/${id}`)
+    .subscribe(() => {
+      this.getStudents();
+    });
+  }
+
+
+
 }

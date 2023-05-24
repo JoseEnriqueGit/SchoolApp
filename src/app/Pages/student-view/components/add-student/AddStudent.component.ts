@@ -1,70 +1,77 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-
-
 export interface StudentData {
   nombre: string;
   apellido: string;
-  LenguaEspanola: number;
-  Matematicas: number;
-  CienciasNaturales: number;
-  CienciasSociales: number;
-  Promedio: string;
+  Lengua_espanola: number;
+  Matematica: number;
+  Ciencias_sociales: number;
+  Ciencias_naturales: number;
+  Literal: string;
 }
 
 @Component({
   selector: 'AddStudentComponent',
   templateUrl: './AddStudentComponent.html',
-  styleUrls: ['./AddStudentComponent.scss']
+  styleUrls: ['./AddStudentComponent.scss'],
 })
-
 export class AddStudentComponent {
-
   constructor(private http: HttpClient) {}
+  @Input() getStudents: (() => void) | undefined;
 
-  dataSource = new MatTableDataSource<StudentData>([
+  dataSourceAdd = new MatTableDataSource<StudentData>([
     {
       nombre: '',
       apellido: '',
-      LenguaEspanola: 0,
-      Matematicas: 0,
-      CienciasNaturales: 0,
-      CienciasSociales: 0,
-      Promedio: 'N'
-    }
+      Lengua_espanola: 0,
+      Matematica: 0,
+      Ciencias_sociales: 0,
+      Ciencias_naturales: 0,
+      Literal: 'N',
+    },
   ]);
 
   average() {
-    const data = this.dataSource.data[0];
-    const promedio = (data.LenguaEspanola + data.Matematicas + data.CienciasNaturales + data.CienciasSociales) / 4;
+    const data = this.dataSourceAdd.data[0];
+    const promedio =
+      (parseInt(data.Lengua_espanola.toString(), 10) +
+        parseInt(data.Matematica.toString(), 10) +
+        parseInt(data.Ciencias_sociales.toString(), 10) +
+        parseInt(data.Ciencias_naturales.toString(), 10)) /
+      4;
 
+    console.log(promedio);
     if (promedio >= 90) {
-      data.Promedio = 'A';
+      data.Literal = 'A';
     } else if (promedio >= 80 && promedio < 90) {
-      data.Promedio = 'B';
+      data.Literal = 'B';
     } else if (promedio >= 70 && promedio < 80) {
-      data.Promedio = 'C';
+      data.Literal = 'C';
     } else {
-      data.Promedio = 'F';
+      data.Literal = 'F';
     }
   }
 
   addData() {
-    const data = this.dataSource.data[0];
+    const data = this.dataSourceAdd.data[0];
     if (!data.nombre || !data.apellido) {
       alert('Nombre y Apellido son requeridos');
       return;
     }
     this.average();
-    this.http.post('https://apischoolapimana.azure-api.net/estudiante', data)
-      .subscribe(response => {
+    this.http
+      .post(
+        'https://schoolapi-vkp2.onrender.com/new-estudiante',
+        this.dataSourceAdd.data[0]
+      )
+      .subscribe((response) => {
         console.log(response);
+        if (this.getStudents) {
+          this.getStudents();
+        }
       });
   }
-
-  // Access-Control-Allow-Origin @(context.Request.Headers.GetValueOrDefault("Origin",""))
-  // Access-Control-Allow-Credentials true
 
   value: string = '';
   displayedColumns: string[] = [
@@ -75,5 +82,4 @@ export class AddStudentComponent {
     'Ciencias Naturales',
     'Ciencias Sociales',
   ];
-
 }
