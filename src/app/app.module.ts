@@ -16,6 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AttendanceViewComponent } from './Pages/attendance-view/attendance-view.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { AttendanceHistoryComponent } from './Pages/attendance-history/attendance-history.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NavComponent,
     StudentViewComponent,
     AttendanceViewComponent,
+    AttendanceHistoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatButtonModule,
     HttpClientModule,
     MatCheckboxModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
