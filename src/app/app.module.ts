@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { AddStudentComponent } from './Pages/student-view/components/add-student/AddStudent.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, NavComponent, StudentViewComponent, AddStudentComponent],
@@ -26,6 +27,7 @@ import { AddStudentComponent } from './Pages/student-view/components/add-student
     FormsModule,
     MatTableModule,
     MatButtonModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

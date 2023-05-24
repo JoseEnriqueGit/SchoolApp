@@ -6,11 +6,11 @@ export interface StudentData {
   position: number;
   nombre: string;
   apellido: string;
-  LenguaEspanola: number;
-  Matematicas: number;
-  CienciasNaturales: number;
-  Ciencias_Sociales: number;
-  Promedio: string;
+  LenguaEspanola: number | null;
+  Matematicas: number | null;
+  CienciasNaturales: number | null;
+  Ciencias_Sociales: number | null;
+  Promedio: string | null;
 }
 
 @Component({
@@ -21,7 +21,7 @@ export interface StudentData {
 export class StudentViewComponent {
 
   constructor(private http: HttpClient) {}
-  
+
   value: string = '';
 
   dataSource = new MatTableDataSource<StudentData>([]);
@@ -31,12 +31,9 @@ export class StudentViewComponent {
   }
 
   getStudents() {
-    this.http.get<StudentData[]>('https://apischoolapi.azure-api.net/estudiante')
+    this.http.get<StudentData[]>('https://apischoolapimana.azure-api.net/estudiante')
     .subscribe((data: StudentData[]) => {
-    // Asigna los datos recibidos a la propiedad dataSource de tu tabla
-    this.dataSource = new MatTableDataSource(data);
-    console.log(this.dataSource);
-    
+      this.dataSource = new MatTableDataSource(data);
     });   
   }
 

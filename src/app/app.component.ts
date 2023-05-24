@@ -2,13 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  templateUrl: './app.html',
+  styleUrls: ['./app.scss'],
 })
 export class AppComponent {
-  title = 'School';
-
-  ChangeTitle() {
-    this.title = 'School -1';
-  }
 }
