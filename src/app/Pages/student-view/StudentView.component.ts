@@ -177,6 +177,12 @@ export class StudentViewComponent {
       )
       .subscribe(() => {
         this.getStudents();
+        this.dataSourceAdd.data[0].nombre = '';
+        this.dataSourceAdd.data[0].apellido = '';
+        this.dataSourceAdd.data[0].Lengua_espanola = 0;
+        this.dataSourceAdd.data[0].Matematica = 0;
+        this.dataSourceAdd.data[0].Ciencias_sociales = 0;
+        this.dataSourceAdd.data[0].Ciencias_naturales = 0;
         this.back();
       });
   }
