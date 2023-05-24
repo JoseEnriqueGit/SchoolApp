@@ -13,6 +13,16 @@ export interface StudentData {
   Promedio: string | null;
 }
 
+export interface StudentDataAdd {
+  nombre: string;
+  apellido: string;
+  Lengua_espanola: number;
+  Matematica: number;
+  Ciencias_sociales: number;
+  Ciencias_naturales: number;
+  Literal: string;
+}
+
 @Component({
   selector: 'StudentViewComponent',
   templateUrl: './StudentViewComponent.html',
@@ -23,8 +33,22 @@ export class StudentViewComponent {
   constructor(private http: HttpClient) {}
 
   value: string = '';
+  onEdit: boolean = false;
+  idToEdit: string = '';
 
   dataSource = new MatTableDataSource<StudentData>([]);
+
+  dataSourceAdd = new MatTableDataSource<StudentDataAdd>([
+    {
+      nombre: '',
+      apellido: '',
+      Lengua_espanola: 0,
+      Matematica: 0,
+      Ciencias_sociales: 0,
+      Ciencias_naturales: 0,
+      Literal: 'N',
+    },
+  ]);
 
   displayedColumns: string[] = [
     'position',
@@ -39,6 +63,15 @@ export class StudentViewComponent {
     'delete',
   ];
 
+  displayedColumnsAdd: string[] = [
+    'nombre',
+    'apellido',
+    'Lengua Espanola',
+    'Matematicas',
+    'Ciencias Naturales',
+    'Ciencias Sociales',
+  ];
+
   ngOnInit() {
     this.getStudents();
   }
@@ -47,6 +80,33 @@ export class StudentViewComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  average() {
+    const data = this.dataSourceAdd.data[0];
+    const promedio =
+      (parseInt(data.Lengua_espanola.toString(), 10) +
+        parseInt(data.Matematica.toString(), 10) +
+        parseInt(data.Ciencias_sociales.toString(), 10) +
+        parseInt(data.Ciencias_naturales.toString(), 10)) /
+      4;
+
+    console.log(promedio);
+    if (promedio >= 90) {
+      data.Literal = 'A';
+    } else if (promedio >= 80 && promedio < 90) {
+      data.Literal = 'B';
+    } else if (promedio >= 70 && promedio < 80) {
+      data.Literal = 'C';
+    } else {
+      data.Literal = 'F';
+    }
+  }
+
+  editStudent(_id: number) {
+    this.onEdit = !this.onEdit;
+    this.idToEdit = _id.toString();
+  }
+
 
   getStudents() {
     this.http.get<StudentData[]>('https://schoolapi-vkp2.onrender.com/all-estudiante')
@@ -63,6 +123,39 @@ export class StudentViewComponent {
     });
   }
 
+  addData() {
+    const data = this.dataSourceAdd.data[0];
+    if (!data.nombre || !data.apellido) {
+      alert('Nombre y Apellido son requeridos');
+      return;
+    }
+    this.average();
+    this.http
+      .post(
+        'https://schoolapi-vkp2.onrender.com/new-estudiante',
+        this.dataSourceAdd.data[0]
+      )
+      .subscribe(() => {
+        this.getStudents();
+      });
+  }
+
+  editData() {
+    const data = this.dataSourceAdd.data[0];
+    if (!data.nombre || !data.apellido) {
+      alert('Nombre y Apellido son requeridos');
+      return;
+    }
+    this.average();
+    this.http
+      .put(
+        `https://schoolapi-vkp2.onrender.com/modic-estudiante/${this.idToEdit}`,
+        this.dataSourceAdd.data[0]
+      )
+      .subscribe(() => {
+        this.getStudents();
+      });
+  }
 
 
 }
