@@ -13,9 +13,16 @@ import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { AttendanceViewComponent } from './Pages/attendance-view/attendance-view.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, StudentViewComponent],
+  declarations: [
+    AppComponent,
+    NavComponent,
+    StudentViewComponent,
+    AttendanceViewComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +34,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatTableModule,
     MatButtonModule,
     HttpClientModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
