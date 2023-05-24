@@ -1,9 +1,9 @@
 .StudentViewComponent {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 
-  div{
+  .ListStudent{
     display: flex;
     flex-direction: column;
     // gap: 20px;
@@ -24,6 +24,58 @@
         display: table;
         width: 100%;
         table-layout: fixed;
+      }
+    }
+  }
+
+  .AddStudent{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  
+    table{
+      box-shadow: none;
+      th{
+        text-align: center;
+      }
+      td{
+        text-align: center;
+  
+        mat-form-field{
+          max-width: 120px
+        }
+      }
+    }
+
+    .demo-button-container{
+      button{
+        width: 100%;
+      }
+    }
+  }
+
+  .ModicStudent{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  
+    table{
+      box-shadow: none;
+      th{
+        text-align: center;
+      }
+      td{
+        text-align: center;
+  
+        mat-form-field{
+          max-width: 120px;
+        }
+      }
+    }
+
+    .button-container-modic{
+      button{
+        width: 100%;
       }
     }
   }
