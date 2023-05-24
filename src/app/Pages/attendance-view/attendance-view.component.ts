@@ -26,6 +26,8 @@ export class AttendanceViewComponent {
   dataSource = new MatTableDataSource<StudentData>();
   selection = new SelectionModel<StudentData>(true, []);
 
+  value: string = '';
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -62,11 +64,19 @@ export class AttendanceViewComponent {
   }
 
   saveData() {
-    const selectedData = this.dataSource.data.map((student) => ({
+    if (this.value === '') {
+      alert('La fecha es requerida');
+      return;
+    }
+    // const selectedData = this.dataSource.data.map((student) => ({
+    //   id_estudiante: student._id,
+    //   fecha: this.value,
+    //   presente: this.selection.isSelected(student),
+    // }));
+    const selectedData = this.selection.selected.map((student) => ({
       id_estudiante: student._id,
-      fecha: new Date(),
+      fecha: this.value,
       presente: true,
-      // presente: this.selection.isSelected(student),
     }));
     this.http
       .post('https://schoolapi-vkp2.onrender.com/new-asistencia', selectedData)
