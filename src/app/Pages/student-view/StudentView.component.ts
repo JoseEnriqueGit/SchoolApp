@@ -96,7 +96,6 @@ export class StudentViewComponent {
         parseInt(data.Ciencias_naturales.toString(), 10)) /
       4;
 
-    console.log(promedio);
     if (promedio >= 90) {
       data.Literal = 'A';
     } else if (promedio >= 80 && promedio < 90) {
@@ -115,8 +114,6 @@ export class StudentViewComponent {
 
     this.http.get<StudentData>(`https://schoolapi-vkp2.onrender.com/estudiante/${_id}`)
     .subscribe((data: StudentData) => {
-      console.log(data);
-      
       this.nameToEdit = data.nombre;
       this.lastNameToEdit = data.apellido;
       this.dataSourceAdd.data[0].nombre = data.nombre;
@@ -135,8 +132,6 @@ export class StudentViewComponent {
     this.http.get<StudentData[]>('https://schoolapi-vkp2.onrender.com/all-estudiante')
     .subscribe((data: StudentData[]) => {
       this.dataSource = new MatTableDataSource(data);
-      console.log(this.dataSource.data);
-      
     });   
   }
   deleteStudent(id: number) {
