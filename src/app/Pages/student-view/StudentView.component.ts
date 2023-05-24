@@ -6,10 +6,10 @@ export interface StudentData {
   position: number;
   nombre: string;
   apellido: string;
-  LenguaEspanola: number | null;
-  Matematicas: number | null;
-  CienciasNaturales: number | null;
-  Ciencias_Sociales: number | null;
+  Lengua_espanola: number;
+  Matematica: number;
+  Ciencias_sociales: number;
+  Ciencias_naturales: number;
   Promedio: string | null;
 }
 
@@ -119,6 +119,12 @@ export class StudentViewComponent {
       
       this.nameToEdit = data.nombre;
       this.lastNameToEdit = data.apellido;
+      this.dataSourceAdd.data[0].nombre = data.nombre;
+      this.dataSourceAdd.data[0].apellido = data.apellido;
+      this.dataSourceAdd.data[0].Lengua_espanola = data.Lengua_espanola;
+      this.dataSourceAdd.data[0].Matematica = data.Matematica;
+      this.dataSourceAdd.data[0].Ciencias_sociales = data.Ciencias_sociales;
+      this.dataSourceAdd.data[0].Ciencias_naturales = data.Ciencias_naturales;
     }
     );
     this.idToEdit = _id.toString();
@@ -171,6 +177,7 @@ export class StudentViewComponent {
       )
       .subscribe(() => {
         this.getStudents();
+        this.back();
       });
   }
 
