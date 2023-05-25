@@ -2,18 +2,13 @@ import { Component } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface StudentData {
   _id: string;
   position: string;
   nombre: string;
   apellido: string;
-}
-
-export interface SelectionData {
-  id_estudiante: string;
-  fecha: Date;
-  presente: boolean;
 }
 
 @Component({
@@ -28,7 +23,7 @@ export class AttendanceViewComponent {
 
   value: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.getStudents();
@@ -75,12 +70,18 @@ export class AttendanceViewComponent {
     // }));
     const selectedData = this.selection.selected.map((student) => ({
       id_estudiante: student._id,
+      nombre: student.nombre,
+      apellido: student.apellido,
       fecha: this.value,
       presente: true,
     }));
     this.http
       .post('https://schoolapi-vkp2.onrender.com/new-asistencia', selectedData)
       .subscribe();
+      this.selection.clear();
+      this.snackBar.open('Datos guardados', 'Cerrar', {
+        duration: 2000,
+      });
   }
   
 }

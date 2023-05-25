@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 export interface StudentData {
   position: number;
@@ -30,7 +32,7 @@ export interface StudentDataAdd {
 })
 export class StudentViewComponent {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
   value: string = '';
   onEdit: boolean = false;
@@ -80,6 +82,15 @@ export class StudentViewComponent {
 
   back() {
     this.onEdit = !this.onEdit;
+  }
+
+  clean() {
+    this.dataSourceAdd.data[0].nombre = '';
+    this.dataSourceAdd.data[0].apellido = '';
+    this.dataSourceAdd.data[0].Lengua_espanola = 0;
+    this.dataSourceAdd.data[0].Matematica = 0;
+    this.dataSourceAdd.data[0].Ciencias_sociales = 0;
+    this.dataSourceAdd.data[0].Ciencias_naturales = 0;
   }
   
   applyFilter(event: Event) {
@@ -156,6 +167,9 @@ export class StudentViewComponent {
       .subscribe(() => {
         this.getStudents();
       });
+      this.snackBar.open('Datos guardados', 'Cerrar', {
+        duration: 2000,
+      });
   }
 
   editData() {
@@ -172,13 +186,11 @@ export class StudentViewComponent {
       )
       .subscribe(() => {
         this.getStudents();
-        this.dataSourceAdd.data[0].nombre = '';
-        this.dataSourceAdd.data[0].apellido = '';
-        this.dataSourceAdd.data[0].Lengua_espanola = 0;
-        this.dataSourceAdd.data[0].Matematica = 0;
-        this.dataSourceAdd.data[0].Ciencias_sociales = 0;
-        this.dataSourceAdd.data[0].Ciencias_naturales = 0;
+        this.clean();
         this.back();
+        this.snackBar.open('Datos editados', 'Cerrar', {
+          duration: 2000,
+        });
       });
   }
 
