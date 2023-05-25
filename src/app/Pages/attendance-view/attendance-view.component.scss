@@ -4,7 +4,17 @@ div{
   gap: 15px;
 
   table{
+    display: flex;
+    flex-direction: column;
+    max-height: 550px;
+    overflow: auto;
     box-shadow: none;
+
+    tr{
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
   }
 
 }
