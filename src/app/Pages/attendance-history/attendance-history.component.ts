@@ -5,6 +5,8 @@ interface Asistencia {
   id_estudiante: string;
   fecha: Date;
   presente: boolean;
+  nombre: string;
+  apellido: string;
 }
 
 @Component({
@@ -18,16 +20,25 @@ export class AttendanceHistoryComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<Asistencia[]>('https://schoolapi-vkp2.onrender.com/all-asistencia')
-      .subscribe(data => {
-        data.forEach(asistencia => {
-          const fecha = new Date(asistencia.fecha).toISOString().split('T')[0];
-          if (!this.asistencias[fecha]) {
-            this.asistencias[fecha] = [];
+    this.http
+      .get<Asistencia[]>('https://schoolapi-vkp2.onrender.com/all-asistencia')
+      .subscribe(
+        (data) => {
+          data.forEach((asistencia) => {
+            const fecha = new Date(asistencia.fecha)
+              .toISOString()
+              .split('T')[0];
+            if (!this.asistencias[fecha]) {
+              this.asistencias[fecha] = [];
+            }
+            this.asistencias[fecha].push(asistencia);
+          });
+        },
+        (error) => {
+          if (error.status === 404) {
+            console.log('No hay asistencias');
           }
-          this.asistencias[fecha].push(asistencia);
-        });
-      });
+        }
+      );
   }
 }
-
