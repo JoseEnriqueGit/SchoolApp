@@ -21,7 +21,7 @@ export class AttendanceViewComponent {
   dataSource = new MatTableDataSource<StudentData>();
   selection = new SelectionModel<StudentData>(true, []);
 
-  value: string = '';
+  value: Date = new Date();
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
@@ -59,29 +59,33 @@ export class AttendanceViewComponent {
   }
 
   saveData() {
-    if (this.value === '') {
+    if (this.value === null) {
       alert('La fecha es requerida');
       return;
     }
-    // const selectedData = this.dataSource.data.map((student) => ({
-    //   id_estudiante: student._id,
-    //   fecha: this.value,
-    //   presente: this.selection.isSelected(student),
-    // }));
-    const selectedData = this.selection.selected.map((student) => ({
+    const selectedData = this.dataSource.data.map((student) => ({
       id_estudiante: student._id,
       nombre: student.nombre,
       apellido: student.apellido,
       fecha: this.value,
-      presente: true,
+      presente: this.selection.isSelected(student),
     }));
     this.http
       .post('https://schoolapi-vkp2.onrender.com/new-asistencia', selectedData)
-      .subscribe();
-      this.selection.clear();
-      this.snackBar.open('Datos guardados', 'Cerrar', {
-        duration: 2000,
-      });
+      .subscribe(
+        (res) => {
+          this.selection.clear();
+          this.snackBar.open('Datos guardados', 'Cerrar', {
+            duration: 2000,
+          });
+        },
+        (err) => {
+          if (err.status === 400) {
+            this.snackBar.open(err.error.message, 'Cerrar', {
+              duration: 2000,
+            });
+          }
+        }
+      );
   }
-  
 }
